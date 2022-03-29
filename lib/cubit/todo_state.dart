@@ -30,9 +30,15 @@ class TodoAddLoading extends TodoState {}
 class TodoAddLoaded extends TodoState {}
 
 class TodoAddError extends TodoState {
+  final String? errorMessage;
+
+  TodoAddError({this.errorMessage});
+}
+
+class TodoAddSuccess extends TodoState {
   final String errorMessage;
 
-  TodoAddError({required this.errorMessage});
+  TodoAddSuccess({required this.errorMessage});
 }
 
 class RegisterLoading extends TodoState {}
@@ -40,13 +46,13 @@ class RegisterLoading extends TodoState {}
 class RegisterLoaded extends TodoState {}
 
 class RegisterError extends TodoState {
-  var error;
+  final dynamic error;
 
-  RegisterError({required this.error});
+  RegisterError({this.error});
 }
 
 class RegisterMessage extends TodoState {
-  final String message;
+  final String? message;
 
-  RegisterMessage({required this.message});
+  RegisterMessage({this.message});
 }

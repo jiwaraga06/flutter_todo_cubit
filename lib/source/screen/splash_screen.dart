@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_todo_cubit/cubit/todo_cubit.dart';
@@ -23,12 +24,18 @@ class _SplashScreenState extends State<SplashScreen> {
             if (state is SplashValue == true) {
               Navigator.pushReplacementNamed(context, HOME_TODO);
             } else {
-              Navigator.pushReplacementNamed(context, REGISTER);
+              Navigator.pushReplacementNamed(context, HOME_TODO);
+              // Navigator.pushReplacementNamed(context, REGISTER);
             }
           }
         },
-        child: Center(
-          child: Text('Splash Screen'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            Text('Splash Screen'),
+            CupertinoActivityIndicator(),
+          ],
         ),
       ),
     );

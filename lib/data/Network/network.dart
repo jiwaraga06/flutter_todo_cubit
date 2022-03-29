@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_todo_cubit/data/Model/todoModel.dart';
 import 'package:flutter_todo_cubit/data/Network/api.dart';
 import 'package:http/http.dart' as http;
@@ -60,13 +61,8 @@ class MyNetwork {
     try {
       var url = Uri.parse(Api.register());
       var response = await http.post(url, body: body);
-      final json = jsonDecode(response.body);
-      print("JSON REGISTER: $json");
-      if (response.statusCode == 200) {
-        return json;
-      } else {
-        return json;
-      }
+      final json = response;
+      return json;
     } catch (e) {}
   }
 }

@@ -16,10 +16,8 @@ class TodoCubit extends Cubit<TodoState> {
   TodoCubit({this.myRepository}) : super(TodoInitial());
 
   void getTodo() {
-    Timer(const Duration(seconds: 2), () {
-      myRepository!.fetchMyTodos().then((todo) {
-        emit(TodoLoaded(todo: todo));
-      });
+    myRepository!.fetchMyTodos().then((todo) {
+      emit(TodoLoaded(todo: todo));
     });
   }
 
@@ -63,9 +61,9 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  void refresh() {
-    emit(TodoLoading());
-    Future.delayed(const Duration(seconds: 2));
+  Future refresh() async {
+    // emit(TodoLoading());
+    await Future.delayed(const Duration(seconds: 2));
     myRepository!.fetchMyTodos().then((todo) {
       emit(TodoLoaded(todo: todo));
     });
@@ -83,14 +81,21 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future register(name, email, password) async{
+  Future register(name, email, password) async {
     emit(RegisterLoading());
-    await Future.delayed(const Duration(seconds: 2));
     myRepository!.register(name, email, password).then((value) {
-      print('Value register: $value');
-      emit(RegisterMessage(message: value['message']));
-      emit(RegisterError(error: value['error']));
+      var json = jsonDecode(value.body);
+      print('Value register: $json');
+      print('Value status: ${value.statusCode.toString()}');
+      if (value.statusCode == 200) {
+        emit(RegisterLoaded());
+        emit(RegisterMessage(message: json['message']));
+      } else {
+        emit(RegisterLoaded());
+        emit(RegisterMessage(message: json['message']));
+        emit(RegisterError(error: json['error']));
+        // print(json['error'].toString());
+      }
     });
-      emit(RegisterLoaded());
   }
 }

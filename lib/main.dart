@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_cubit/source/Router/router.dart';
-import 'package:flutter_todo_cubit/source/screen/TodoScreen/todo_screen.dart';
 
 void main() {
   runApp(MyApp(

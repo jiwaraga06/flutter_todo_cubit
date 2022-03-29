@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_todo_cubit/cubit/todo_cubit.dart';
 import 'package:flutter_todo_cubit/source/Router/string.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({Key? key}) : super(key: key);
@@ -35,13 +36,24 @@ class _TodoScreenState extends State<TodoScreen> {
           }
           var todo = (state as TodoLoaded).todo;
           if (todo!.isEmpty) {
-            return const Center(
-              child: Text('Data Kosong'),
+            return LiquidPullToRefresh(
+              showChildOpacityTransition: false,
+              onRefresh: () async {
+                BlocProvider.of<TodoCubit>(context).refresh();
+              },
+              child: const Center(
+                child: Text('Data Kosong'),
+              ),
             );
           }
-          return RefreshIndicator(
-            onRefresh: () async {
-              BlocProvider.of<TodoCubit>(context).refresh();
+          return LiquidPullToRefresh(
+            showChildOpacityTransition: false,
+            backgroundColor: Colors.blue,
+            borderWidth: 3,
+            height: 80,
+            color: Colors.white,
+            onRefresh: () {
+              return BlocProvider.of<TodoCubit>(context).refresh();
             },
             child: ListView.builder(
               itemCount: todo.length,

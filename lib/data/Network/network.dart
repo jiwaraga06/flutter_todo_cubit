@@ -65,4 +65,14 @@ class MyNetwork {
       return json;
     } catch (e) {}
   }
+
+  Future login(body) async {
+    try {
+      var url = Uri.parse(Api.login());
+      var response = await http.post(url,body: body);
+      final json = response;
+      return json;
+    } catch (e) {
+    }
+  }
 }

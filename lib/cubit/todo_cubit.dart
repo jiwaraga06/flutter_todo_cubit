@@ -81,7 +81,7 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future register(name, email, password) async {
+  void register(name, email, password) async {
     emit(RegisterLoading());
     myRepository!.register(name, email, password).then((value) {
       var json = jsonDecode(value.body);
@@ -95,6 +95,22 @@ class TodoCubit extends Cubit<TodoState> {
         emit(RegisterMessage(message: json['message']));
         emit(RegisterError(error: json['error']));
         // print(json['error'].toString());
+      }
+    });
+  }
+
+  void login(email, password) {
+    emit(LoginLoading());
+    myRepository!.login(email, password).then((value) {
+      var json = jsonDecode(value.body);
+      print('LOGIN :$json');
+      if (value.statusCode == 200) {
+        emit(LoginLoaded());
+        emit(LoginMessage(message: json['message']));
+      } else {
+        emit(LoginLoaded());
+        emit(LoginMessage(message: json['message']));
+        emit(LoginError(error: json['error']));
       }
     });
   }

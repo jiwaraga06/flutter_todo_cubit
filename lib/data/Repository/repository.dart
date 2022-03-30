@@ -36,4 +36,13 @@ class MyRepository {
     final json = await myNetwork!.register(body);
     return json;
   }
+
+  Future login(var email, password) async {
+    var body = {
+      "email": email,
+      "password": password,
+    };
+    final json = await myNetwork!.login(body);
+    return json;
+  }
 }

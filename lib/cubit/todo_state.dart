@@ -56,3 +56,19 @@ class RegisterMessage extends TodoState {
 
   RegisterMessage({this.message});
 }
+
+class LoginLoading extends TodoState {}
+
+class LoginLoaded extends TodoState {}
+
+class LoginError extends TodoState {
+  final dynamic error;
+
+  LoginError({this.error});
+}
+
+class LoginMessage extends TodoState {
+  final String? message;
+
+  LoginMessage({this.message});
+}

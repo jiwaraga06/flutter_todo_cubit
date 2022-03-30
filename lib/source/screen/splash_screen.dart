@@ -25,17 +25,18 @@ class _SplashScreenState extends State<SplashScreen> {
               Navigator.pushReplacementNamed(context, HOME_TODO);
             } else {
               Navigator.pushReplacementNamed(context, HOME_TODO);
-              // Navigator.pushReplacementNamed(context, REGISTER);
+              // Navigator.pushReplacementNamed(context, LOGIN);
             }
           }
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Text('Splash Screen'),
-            CupertinoActivityIndicator(),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text('Splash Screen'),
+              CupertinoActivityIndicator(),
+            ],
+          ),
         ),
       ),
     );

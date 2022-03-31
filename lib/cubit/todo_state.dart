@@ -9,10 +9,10 @@ class SplashLoading extends TodoState {}
 
 class SplashLoaded extends TodoState {}
 
-class SplashValue extends TodoState {
-  final bool auth;
+class AuthToken extends TodoState {
+  final String? auth;
 
-  SplashValue({required this.auth});
+  AuthToken({this.auth});
 }
 
 class TodoLoading extends TodoState {}
@@ -36,9 +36,9 @@ class TodoAddError extends TodoState {
 }
 
 class TodoAddSuccess extends TodoState {
-  final String errorMessage;
+  final String? errorMessage;
 
-  TodoAddSuccess({required this.errorMessage});
+  TodoAddSuccess({this.errorMessage});
 }
 
 class RegisterLoading extends TodoState {}

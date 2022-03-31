@@ -21,11 +21,19 @@ class _LoginState extends State<Login> {
         title: Text('Login'),
       ),
       body: BlocListener<TodoCubit, TodoState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoginError) {
             setState(() {
               error = state.error;
             });
+          }
+          if (state is LoginLoading) {
+            setState(() {
+              error.clear();
+            });
+          }
+          if (state is AuthToken) {
+            Navigator.pushReplacementNamed(context, HOME_TODO);
           }
         },
         child: ListView(
@@ -40,13 +48,13 @@ class _LoginState extends State<Login> {
                       hintText: 'Masukan Email',
                     ),
                     autovalidateMode: error['email'] == null ? AutovalidateMode.disabled : AutovalidateMode.always,
-                        validator: (_) {
-                          if (error['email'] != null) {
-                            return error['email'][0];
-                          } else {
-                            return '';
-                          }
-                        },
+                    validator: (_) {
+                      if (error['email'] != null) {
+                        return error['email'][0];
+                      } else {
+                        return '';
+                      }
+                    },
                   ),
                   TextFormField(
                     controller: controllerPassword,
@@ -54,13 +62,13 @@ class _LoginState extends State<Login> {
                       hintText: 'Masukan Password',
                     ),
                     autovalidateMode: error['password'] == null ? AutovalidateMode.disabled : AutovalidateMode.always,
-                        validator: (_) {
-                          if (error['password'] != null) {
-                            return error['password'][0];
-                          } else {
-                            return '';
-                          }
-                        },
+                    validator: (_) {
+                      if (error['password'] != null) {
+                        return error['password'][0];
+                      } else {
+                        return '';
+                      }
+                    },
                   ),
                 ],
               ),

@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter_todo_cubit/data/Model/todoModel.dart';
 import 'package:flutter_todo_cubit/data/Network/api.dart';
 import 'package:http/http.dart' as http;
@@ -45,13 +43,8 @@ class MyNetwork {
       var response = await http.post(url, body: {
         "message": todo,
       });
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.body);
-        print("Json Add: $json");
-        // return json;
-      } else {
-        // return {};
-      }
+      final json = response;
+      return json;
     } catch (e) {
       // return {};
     }
@@ -69,10 +62,9 @@ class MyNetwork {
   Future login(body) async {
     try {
       var url = Uri.parse(Api.login());
-      var response = await http.post(url,body: body);
+      var response = await http.post(url, body: body);
       final json = response;
       return json;
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

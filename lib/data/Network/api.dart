@@ -1,4 +1,4 @@
-String baseUrl = "http://192.168.101.25:8000";
+String baseUrl = "http://192.168.50.6:8000";
 
 class Api {
   static getTodo() {

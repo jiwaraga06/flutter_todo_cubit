@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_todo_cubit/cubit/todo_cubit.dart';
 import 'package:flutter_todo_cubit/source/Router/string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,14 +20,13 @@ class _SplashScreenState extends State<SplashScreen> {
     BlocProvider.of<TodoCubit>(context).splashAUth();
     return Scaffold(
       body: BlocListener<TodoCubit, TodoState>(
-        listener: (context, state) {
-          if (state is SplashLoaded) {
-            if (state is SplashValue == true) {
-              Navigator.pushReplacementNamed(context, HOME_TODO);
-            } else {
-              Navigator.pushReplacementNamed(context, HOME_TODO);
-              // Navigator.pushReplacementNamed(context, LOGIN);
-            }
+        listener: (context, state) async {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          var token = pref.getString('token');
+          if (token != null) {
+            Navigator.pushReplacementNamed(context, HOME_TODO);
+          } else {
+            Navigator.pushReplacementNamed(context, LOGIN);
           }
         },
         child: Center(

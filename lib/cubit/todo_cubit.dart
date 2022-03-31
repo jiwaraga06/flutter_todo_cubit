@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_cubit/data/Model/todoModel.dart';
 import 'package:flutter_todo_cubit/data/Repository/repository.dart';
 import 'package:flutter_todo_cubit/source/Router/string.dart';
+import 'package:flutter_todo_cubit/source/screen/TodoScreen/todo_screen.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'todo_state.dart';
 
@@ -25,7 +28,7 @@ class TodoCubit extends Cubit<TodoState> {
     myRepository!.updateTodos(data).then((value) {
       print(value);
       if (value) {
-        updateTodoList(value);
+        getTodo();
       }
     });
   }
@@ -45,7 +48,8 @@ class TodoCubit extends Cubit<TodoState> {
     emit(TodoAddLoading());
     Timer(const Duration(seconds: 2), () {
       myRepository!.addTodo(todo).then((value) {
-        print("value Add Todo :$value");
+        var json = jsonDecode(value.body);
+        print("value Add Todo :$json");
         // addTodos(value['todo'][0]);
         emit(TodoAddLoaded());
       });
@@ -56,7 +60,7 @@ class TodoCubit extends Cubit<TodoState> {
     final currentState = state;
     if (currentState is TodoLoaded) {
       final todoList = currentState.todo;
-      print("Add Todos:   $todoList");
+      print("Add Todos: $todoList");
       emit(TodoLoaded(todo: todoList));
     }
   }
@@ -71,14 +75,16 @@ class TodoCubit extends Cubit<TodoState> {
 
   Future splashAUth() async {
     emit(SplashLoading());
-    var a = false;
+
     await Future.delayed(const Duration(seconds: 2));
     emit(SplashLoaded());
-    if (a == true) {
-      emit(SplashValue(auth: true));
-    } else {
-      emit(SplashValue(auth: false));
-    }
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var a = pref.getString('token');
+    // if (a!.isNotEmpty) {
+    //   emit(SplashValue(auth: true));
+    // } else {
+    //   emit(SplashValue(auth: false));
+    // }
   }
 
   void register(name, email, password) async {
@@ -101,12 +107,15 @@ class TodoCubit extends Cubit<TodoState> {
 
   void login(email, password) {
     emit(LoginLoading());
-    myRepository!.login(email, password).then((value) {
+    myRepository!.login(email, password).then((value) async {
       var json = jsonDecode(value.body);
       print('LOGIN :$json');
       if (value.statusCode == 200) {
         emit(LoginLoaded());
         emit(LoginMessage(message: json['message']));
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('token', json['access_token']);
+        emit(AuthToken(auth: json['access_token']));
       } else {
         emit(LoginLoaded());
         emit(LoginMessage(message: json['message']));

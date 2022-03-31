@@ -38,11 +38,11 @@ class _TodoScreenState extends State<TodoScreen> {
           if (todo!.isEmpty) {
             return LiquidPullToRefresh(
               showChildOpacityTransition: false,
-              onRefresh: () async {
-                BlocProvider.of<TodoCubit>(context).refresh();
+              onRefresh: () {
+                return BlocProvider.of<TodoCubit>(context).refresh();
               },
               child: const Center(
-                child: Text('Data Kosong'),
+                child: Text('Todo List Kosong'),
               ),
             );
           }

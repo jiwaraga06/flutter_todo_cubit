@@ -65,7 +65,7 @@ class _TodoScreenState extends State<TodoScreen> {
                     BlocProvider.of<TodoCubit>(context).updateTodo(data);
                     return false;
                   },
-                  background: Container(color: Colors.indigo),
+                  background: Container(color: Colors.green[700]),
                   child: InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, EDIT_TODO, arguments: data);
